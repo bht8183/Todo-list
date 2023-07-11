@@ -1,0 +1,60 @@
+#mainframe{
+    background-color: rgb(146, 248, 248);
+    height: 500px;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #toptab{
+    background-color: rgb(205, 251, 251);
+    height: 55px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    
+  }
+  
+  #xbutton{
+    background-color: azure;
+    height: 35px;
+    width: 35px;
+    margin-left: 350px;
+    cursor:pointer;
+    transition: transform 0.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+  }
+  
+  #xbutton:hover{
+    background-color: rgb(170, 182, 182);
+  }
+  
+  /**
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  
+  
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  **/
+  

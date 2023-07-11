@@ -1,0 +1,52 @@
+.component{
+    background-color: white;
+    height: 60px;
+    width: 350px;
+    margin-top: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+  }
+.task-info{
+    width: 270px;
+    display: flex;
+    align-items: center;
+}
+h1{
+    font-size: 25px;
+    margin-left: 15px;
+    margin-right: 5px;
+}
+h2{
+    font-size: 17px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.checkbox{
+    cursor: pointer;
+    margin: auto;
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
+}
+.task-manage{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    flex-direction: column;
+}
+.delete{
+    background-color: crimson;
+    height: 15px;
+    width: 10px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+}
+.edit{
+    background-color: chartreuse;
+    height: 15px;
+    width: 10px;
+    border-radius: 3px;
+}
