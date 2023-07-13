@@ -4,33 +4,29 @@ import './Mainframe.css';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import moment, { months } from 'moment/moment';
+import Modal from './modal';
 
 function Mainframe(){
 
+    const [previousTaskName,setPreviousTaskName] = useState([]);
     const [taskList,setList] = useState([]);
     var tempname;
+
+
 
     const nameCheck = (task) => {
         return task == tempname;
     }
 
-    const addTask = () => {
-        var newTaskadd = document.getElementById("newTask").value;
-        var newMonthadd = document.getElementById("month").value;
-        var newDayadd = document.getElementById("day").value;
-        var newYearadd = document.getElementById("year").value;
+    const addTask = (newTaskAdd,date) => {
+        
         var tempList = [];
         var canAdd = true;
-        var code =  <Task name={newTaskadd} month={newMonthadd} day = {newDayadd} year = {newYearadd} key = {newTaskadd} deleteTask = {deleteTask}></Task>;
-        tempname = newTaskadd;
-        var date = newMonthadd+"/"+newDayadd+"/"+newYearadd;
-        var isDateValid = moment(date,"MM/DD/YYYY",true).isValid();
-        if (!isDateValid){
-            alert("date is not valid: "+date);
-            return;
-        }
+        var code =  <Task name={newTaskAdd} date = {date} key = {newTaskAdd} deleteTask = {deleteTask} editTask = {editTask}></Task>;
+        tempname = newTaskAdd;
+
         taskList.forEach(task => {
-            console.log(task.props.name);
+            
             if(nameCheck(task.props.name)){
                 alert("cannot have two task with the same name");
                 canAdd = false;
@@ -40,8 +36,16 @@ function Mainframe(){
             tempList.push(code);
             setList([...taskList, ...tempList]);
             
-            console.log(taskList);
         }
+    }
+    const saveEdit = (taskid) => {
+        const newList = taskList.filter((task) => task.name != "");
+        console.log(newList);
+    }
+
+    const editTask = (taskid) => {    
+        setPreviousTaskName(taskid);
+        console.log(taskid);
     }
 
     const deleteTask = (taskid) => {
@@ -55,35 +59,12 @@ function Mainframe(){
                 modal nested>{
                     close => (
 
-                        <div className='modal'>
-                            <div id = "inputs">
-                                <div className='content'>
-                                    name of task: 
-                                </div>
-                                <input id="newTask"></input>
-                                <div className='date'>
-                                    due date:  
-                                </div>
-                                <div id = "date-box">
-                                    <input id="month"></input>
-                                    <input id="day"></input>
-                                    <input id="year"></input>
-                                </div>
-                            </div>
-                            <div id = "buttons">
-                                <button id = "xbutton" onClick={addTask}>
-                                    Create
-                                </button>
-                                <button id = "xbutton" onClick=
-                                    {() => close()}>
-                                        Cancel
-                                </button>
-                            </div>
-                        </div>
+                        <Modal addTask = {addTask} close = {close}></Modal>
                     )
                 }
 
                 </Popup>
+                
             </div>
             <div id = "taskList">
 

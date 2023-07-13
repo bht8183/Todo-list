@@ -9,7 +9,7 @@ function Task(props){
                     {props.name}
                 </h1>
                 <h2>
-                    due: {props.month}/{props.day}/{props.year}
+                    due: {props.date}
                 </h2>
 
                 <input type ='checkbox' className='checkbox'>
@@ -19,7 +19,7 @@ function Task(props){
                 <button className ='delete' onClick={()=>props.deleteTask(props.name)}>
 
                 </button>
-                <button className='edit'>
+                <button className = 'edit' onClick={()=>props.editTask(props.name)}>
 
                 </button>
             </div>
