@@ -1,56 +1,84 @@
 import Task from './Task';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import './Mainframe.css';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import moment, { months } from 'moment/moment';
 import Modal from './modal';
+import { db } from './firebase.js';
+import { 
+    collection,
+    onSnapshot,
+    setDoc,
+    updateDoc,
+    deleteDoc,
+    doc
+ } from 'firebase/firestore'
+
 
 function Mainframe(){
 
-    const [previousTaskName,setPreviousTaskName] = useState([]);
+    const [previousTaskId,setId] = useState([]);
     const [taskList,setList] = useState([]);
     var tempname;
+    const [isEditing,setIsEditing] = useState(false);
+    const [updateItems,setUpdateItems] = useState('');
+    const [taskCodeList,setCodeList] = useState([]);
 
+    useEffect( () => {
+        onSnapshot( collection( db, 'todos' ), (snapshot) => { 
+            setList( snapshot.docs.map(doc => doc.data() ) ); 
+        });
+    }, [updateItems]);
 
-
-    const nameCheck = (task) => {
-        return task == tempname;
-    }
+    useEffect( () => {
+        let tempList = [];
+        taskList.forEach((task) => {
+            tempList.push(<Task key = {task.id} id = {task.id} name = {task.name} date = {task.date} editTask = {editTask} deleteTask = {deleteTask}> </Task>);
+        });
+        setCodeList( [tempList] );
+        console.log( tempList );
+    }, [taskList]);
 
     const addTask = (newTaskAdd,date) => {
         
-        var tempList = [];
-        var canAdd = true;
-        var code =  <Task name={newTaskAdd} date = {date} key = {newTaskAdd} deleteTask = {deleteTask} editTask = {editTask}></Task>;
-        tempname = newTaskAdd;
-
-        taskList.forEach(task => {
-            
-            if(nameCheck(task.props.name)){
-                alert("cannot have two task with the same name");
-                canAdd = false;
-            }
+        var uid = uuidv4();
+        
+        setDoc( doc( db,'todos',uid), {
+            name : newTaskAdd,
+            date : date,
+            id : uid
         });
-        if (canAdd){
-            tempList.push(code);
-            setList([...taskList, ...tempList]);
-            
-        }
+        setUpdateItems('');
+
     }
-    const saveEdit = (taskid) => {
-        const newList = taskList.filter((task) => task.name != "");
-        console.log(newList);
+
+    const saveEdit = (newTaskName,newTaskDate,taskId) => {
+        
+        updateDoc( doc( db,'todos',taskId), {
+            name : newTaskName,
+            date : newTaskDate
+        });
+        setUpdateItems('');
+        
     }
 
     const editTask = (taskid) => {    
-        setPreviousTaskName(taskid);
+        setId(taskid);
+        setIsEditing(true);
         console.log(taskid);
     }
 
     const deleteTask = (taskid) => {
-        setList((currentList) => currentList.filter((task) => task.key != taskid));
+        deleteDoc( doc( db,'todos',taskid) ).then( ()=>{console.log("document has been deleted"+taskid)} )
+        .catch(error => {console.log(error)});
+        setUpdateItems('');
     }
+
+
+
+
     return(
         <div id = "mainframe">
             <div id = "toptab">
@@ -59,7 +87,19 @@ function Mainframe(){
                 modal nested>{
                     close => (
 
-                        <Modal addTask = {addTask} close = {close}></Modal>
+                        <Modal addTask = {addTask} close = {close} isAdding = {true}></Modal>
+                    )
+                }
+
+                </Popup>
+
+                <Popup open=
+                {isEditing}
+                onClose={() => setIsEditing(false)}
+                modal nested>{
+                    close => (
+
+                        <Modal addTask = {saveEdit} close = {close} isAdding = {false} taskId = {previousTaskId}></Modal>
                     )
                 }
 
@@ -68,7 +108,7 @@ function Mainframe(){
             </div>
             <div id = "taskList">
 
-                {taskList}
+                {taskCodeList}
 
             </div>
 

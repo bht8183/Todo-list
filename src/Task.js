@@ -1,4 +1,7 @@
 import './Task.css'
+import Modal from './modal';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 
 function Task(props){
@@ -16,12 +19,11 @@ function Task(props){
                 </input>
             </div>
             <div className = "task-manage">
-                <button className ='delete' onClick={()=>props.deleteTask(props.name)}>
+                <button className ='delete' onClick={()=>props.deleteTask(props.id)}>
 
                 </button>
-                <button className = 'edit' onClick={()=>props.editTask(props.name)}>
-
-                </button>
+                <button className = 'edit' onClick={()=>props.editTask(props.id)}></button>
+                
             </div>
         </div>
     );

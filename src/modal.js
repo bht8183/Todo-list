@@ -1,5 +1,6 @@
 import moment from "moment";
 
+
 function Modal(props){
     const saveTaskVals = () => {
         var newTaskadd = document.getElementById("newTask").value;
@@ -13,8 +14,13 @@ function Modal(props){
             alert("date is not valid: "+date);
             return;
         }
-        props.addTask(newTaskadd,date);
+        if (props.isAdding){
+            props.addTask(newTaskadd,date);
+        } else{
+            props.addTask(newTaskadd,date, props.taskId);
+        }
 
+        props.close();
     }
     return(
         <div className='modal'>
@@ -33,7 +39,7 @@ function Modal(props){
                 </div>
             </div>
             <div id = "buttons">
-                <button id = "xbutton" onClick={saveTaskVals}>
+                <button id = "xbutton" onClick= {saveTaskVals}>
                     Save
                 </button>
                 <button id = "xbutton" onClick={() => props.close()}>
